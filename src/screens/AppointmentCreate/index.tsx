@@ -18,6 +18,8 @@ import  { TextArea } from '../../components/TextArea';
 import  { Button } from '../../components/Button';
 import  { ModalView } from '../../components/ModalView';
 import  { Guilds } from '../Guilds';
+import  { Background } from '../../components/Background';
+
 import { GuildProps } from '../../components/Guild';
 
 import { theme } from '../../global/styles/theme';
@@ -33,17 +35,25 @@ export function AppointmentCreate() {
         setOpenGuildsModal(true);
     }
 
+    function handleOpenModal() {
+        setOpenGuildsModal(false);
+    }
+
     function handleGuildSelect(guildSelected: GuildProps) {
         setGuild(guildSelected);
         setOpenGuildsModal(false);
     }
+
+    function handleCategorySelect(categoryId: string) {
+        setCategory(categoryId);
+    };
 
     return (
     <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
     >
-    
+    <Background>
         <ScrollView> 
             <Header 
                 title="Agendar Partida"
@@ -57,7 +67,7 @@ export function AppointmentCreate() {
 
             <CategorySelect 
                 hasCheckBox
-                setCategory={setCategory}
+                setCategory={handleCategorySelect}
                 categorySelected={category}
             />
 
@@ -85,7 +95,7 @@ export function AppointmentCreate() {
                 
                 <View style={styles.field}>
                     <View>
-                        <Text style={styles.label}>
+                    <Text style={[styles.label, { marginBottom: 12 }]}>
                             Dia e mês
                         </Text>
 
@@ -99,7 +109,7 @@ export function AppointmentCreate() {
                    </View>
 
                    <View>
-                        <Text style={styles.label}>
+                        <Text style={[styles.label, { marginBottom: 12 }]}>
                             Hora e minuto
                         </Text>
 
@@ -135,8 +145,11 @@ export function AppointmentCreate() {
                 </View>
             </View>
         </ScrollView>
-
-        <ModalView visible={openGuildsModal}>
+    </Background>
+        <ModalView 
+            visible={openGuildsModal}
+            closeModal={handleOpenModal}            
+        >
             <Guilds handleGuildSelect={handleGuildSelect}/>
         </ModalView>
 
